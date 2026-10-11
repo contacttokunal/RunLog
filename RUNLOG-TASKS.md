@@ -56,23 +56,24 @@ This checklist expands [RUNLOG-IMPLEMENTATION-PLAN.md](./RUNLOG-IMPLEMENTATION-P
 
 ## Phase 4 — Add and edit run forms
 
-- [ ] Build a reusable run form for date, distance, duration in minutes, and optional notes.
-- [ ] Validate required fields, date format, positive distance, and positive duration.
-- [ ] Show field-level validation messages and prevent invalid submissions.
-- [ ] Add a save-in-progress state and prevent duplicate submissions.
-- [ ] Implement the Add Run route and return to a useful screen after a successful save.
-- [ ] Implement the Edit Run route using the same form and prefill the selected record.
-- [ ] Handle an unknown or deleted run ID with a clear recovery path.
-- [ ] Verify add and edit behavior with valid input and common invalid/incomplete input.
+- [x] Build a reusable run form for date, distance, duration in minutes, and optional notes.
+- [x] Validate required fields, date format, positive distance, and positive duration.
+- [x] Show field-level validation messages and prevent invalid submissions.
+- [x] Add a save-in-progress state and prevent duplicate submissions.
+- [x] Implement the Add Run route and return to a useful screen after a successful save.
+- [x] Implement the Edit Run flow using the same form and prefill the selected record.
+- [x] Handle an unknown or deleted run ID with a clear recovery path.
+- [x] Verify add and edit behavior with valid input and common invalid/incomplete input.
 
 **Exit criteria:** Valid entries can be added and edited; invalid entries are explained and never persisted.
+**Verification:** Browser flow checks covered blank fields, impossible dates, zero/negative numeric values, add/edit saves, edited history values, reload persistence, and recovery for an unknown run ID. Android device testing remains outstanding.
 
 ## Phase 5 — Running history and deletion
 
 - [ ] Build the history screen with runs in reverse chronological order.
 - [ ] Add an empty state with an action to create the first run.
 - [ ] Build a reusable run row/card showing date, distance, duration, pace, and notes when present.
-- [ ] Add an edit action for each run.
+- [x] Add an edit action for each run.
 - [ ] Add a delete action with an explicit confirmation prompt.
 - [ ] Keep loading, storage errors, and delete-in-progress states understandable.
 - [ ] Verify that cancelling deletion preserves the run and confirming deletion updates history and dashboard metrics.
