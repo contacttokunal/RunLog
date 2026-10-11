@@ -31,10 +31,10 @@ src/
     useRuns.js              # Load and update local run data
   services/
     runStorage.js           # AsyncStorage read/write and data validation
+  data/
+    runs.json               # Read-only sample records for Phase 2
   utils/
-    runCalculations.js      # Totals, weekly distance, pace formatting
-    runValidation.js        # Form and record validation
-    sampleRuns.js           # Non-destructive sample-data seeding
+    runCalculations.js      # Record validation, totals, weekly distance, pace formatting
 ```
 
 These are proposed destinations, not a requirement to replace existing configuration or starter files wholesale. Inspect and adapt existing code before making changes.
@@ -45,22 +45,31 @@ These are proposed destinations, not a requirement to replace existing configura
 
 - Replace the starter Home/Explore navigation with Dashboard, History, and Add Run routes, following the existing Expo Router conventions.
 - Create the dashboard layout and reusable metric cards.
-- Show a clear empty state until run persistence is connected.
+- Build the dashboard with clear empty-state placeholders; Phase 2 populates metrics from a read-only JSON fixture before user persistence is added.
 - Check the SDK 57 documentation before changing Expo Router or chart-related APIs.
 
 **Verification:** Launch the app and check route navigation and responsive layout on Android.
 
-### 2. Run model, calculations, and persistence
+### 2. Run model and calculations
 
-- Define a run record with a stable ID, date, distance in km, duration in minutes, and optional notes.
-- Implement AsyncStorage loading and saving, with data validation and explicit error handling.
-- Do not replace stored data when it cannot be read or validated.
+- Define run records with a stable ID, date (`YYYY-MM-DD`), distance in km, duration in minutes, and optional notes in `src/data/runs.json`.
+- Use the JSON as a read-only fixture for validating records and calculating dashboard totals, average pace, and current-week distance.
 - Calculate pace as duration in minutes divided by distance in km; format as `mm:ss /km`, handling rounding and seconds carry correctly.
-- Define weekly distance as the current Monday–Sunday week unless implementation review identifies a conflict with existing project conventions.
+- Define weekly distance as the current Monday–Sunday week.
+- Keep the static fixture read-only; user-created data will move to AsyncStorage in a later stage.
 
-**Verification:** Check calculations against known values, exercise malformed-storage handling, and confirm saved runs remain after an app restart.
+**Verification:** Check calculations against known values, empty data, invalid records, zero distance, pace rounding, and week boundaries.
 
-### 3. Add and edit runs
+### 3. Local persistence and shared run state
+
+- Replace the static JSON data source with AsyncStorage for user-created runs.
+- Preserve sample records as non-destructive seed data; seed only when storage is confirmed to contain no user data.
+- Surface storage errors and never silently replace data that cannot be read or validated.
+- Keep dashboard and history data synchronized.
+
+**Verification:** Add or update runs, verify persistence after app restart, and confirm existing user data is never replaced by sample data.
+
+### 4. Add and edit runs
 
 - Build a reusable form for date, distance, duration, and optional notes.
 - Validate required fields, positive numeric values, and date input; show actionable inline validation errors.
@@ -68,7 +77,7 @@ These are proposed destinations, not a requirement to replace existing configura
 
 **Verification:** Submit valid runs, try incomplete and invalid values, edit a run, and confirm changes persist.
 
-### 4. Running history and delete
+### 5. Running history and delete
 
 - Display runs in a useful date order and show an empty state when there are no records.
 - Provide edit and delete actions.
@@ -77,15 +86,14 @@ These are proposed destinations, not a requirement to replace existing configura
 
 **Verification:** Add, edit, and delete runs, then check that both history and dashboard metrics reflect the changes.
 
-### 5. Weekly chart, sample data, and polish
+### 6. Weekly chart and polish
 
 - Select a React Native chart library after confirming compatibility with the project’s Expo SDK and installation requirements.
 - Keep chart dependencies limited to those required by the selected library.
-- Add sample records only when storage contains no user data; never overwrite existing runs.
 - Polish shared styling, loading and storage-error states, and small-screen behavior.
 - Update the README with app usage.
 
-**Verification:** Check the chart with empty and populated weeks; confirm sample data does not replace user data; run available lint and type checks; and verify the Android app.
+**Verification:** Check the chart with empty and populated weeks; run available lint and type checks; and verify the Android app.
 
 ## Scope constraints
 

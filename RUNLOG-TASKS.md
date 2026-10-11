@@ -28,15 +28,17 @@ This checklist expands [RUNLOG-IMPLEMENTATION-PLAN.md](./RUNLOG-IMPLEMENTATION-P
 
 ## Phase 2 — Run data and calculations
 
-- [ ] Define and document the run record shape: stable ID, date, distance in km, duration in minutes, and optional notes.
-- [ ] Implement record validation for loaded and newly entered runs.
-- [ ] Implement total distance, run count, and total duration calculations.
-- [ ] Implement average pace calculation from total duration divided by total distance.
-- [ ] Implement `mm:ss /km` formatting, including rounding and seconds carry.
-- [ ] Implement current-week distance calculation using a Monday–Sunday week.
-- [ ] Add focused tests or equivalent checks for valid values, empty data, zero distance, and pace rounding.
+- [x] Define the run record shape in `src/data/runs.json`: stable ID, date (`YYYY-MM-DD`), distance in km, duration in minutes, and optional notes.
+- [x] Add fixed, read-only sample run records in the static JSON file.
+- [x] Implement record validation for the static records, including date/numeric-field checks and unique IDs.
+- [x] Implement total distance, run count, and total duration calculations.
+- [x] Implement average pace calculation from total duration divided by total distance.
+- [x] Implement `mm:ss /km` formatting, including rounding and seconds carry.
+- [x] Implement current-week distance calculation using a Monday–Sunday week.
+- [x] Connect dashboard metrics to the static run data and identify it as sample data.
+- [x] Check valid records, empty data, invalid/zero-distance records, pace rounding, and week boundaries.
 
-**Exit criteria:** Calculations return correct values for known examples and safely handle empty or invalid inputs.
+**Exit criteria:** Calculations return correct values for known examples and safely exclude invalid static records. The JSON fixture is read-only and does not persist user edits; AsyncStorage remains a later phase.
 
 ## Phase 3 — Local persistence and shared run state
 

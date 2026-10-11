@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "runs": [
+    {
+      "id": "run-2026-10-06",
+      "date": "2026-10-06",
+      "distanceKm": 5.2,
+      "durationMinutes": 32,
+      "notes": "Easy neighborhood loop"
+    },
+    {
+      "id": "run-2026-10-08",
+      "date": "2026-10-08",
+      "distanceKm": 2.8,
+      "durationMinutes": 17,
+      "notes": "Short recovery run"
+    },
+    {
+      "id": "run-2026-10-11",
+      "date": "2026-10-11",
+      "distanceKm": 4.6,
+      "durationMinutes": 29,
+      "notes": "Weekend long run"
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, View, useColorScheme } from 'react-native';
+import { Platform, ScrollView, StyleSheet, View, useColorScheme } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { getRunLogColors } from '@/constants/runlog-theme';
@@ -29,8 +29,8 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingTop: 18,
-    paddingBottom: 28,
+    paddingTop: Platform.OS === 'web' ? 76 : 18,
+    paddingBottom: 44,
   },
   inner: {
     width: '100%',

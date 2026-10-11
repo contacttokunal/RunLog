@@ -1,32 +1,41 @@
-import { Link } from 'expo-router';
-import { Pressable, StyleSheet, Text, View, useColorScheme } from 'react-native';
+import { router } from 'expo-router';
+import { Pressable, StyleSheet, Text, View, useColorScheme, useWindowDimensions } from 'react-native';
 
 import AppScreen from '@/components/AppScreen';
 import MetricCard from '@/components/MetricCard';
 import { getRunLogColors } from '@/constants/runlog-theme';
+import runData from '@/data/runs.json';
+import {
+  calculateRunStats,
+  formatDistance,
+  formatDuration,
+  formatPace,
+} from '@/utils/runCalculations';
 
 function ActionLink({ href, children, secondary = false, colors }) {
   return (
-    <Link href={href} asChild>
-      <Pressable
-        accessibilityRole="button"
-        style={({ pressed }) => [
-          styles.actionButton,
-          {
-            backgroundColor: secondary ? colors.surfaceMuted : colors.accent,
-            opacity: pressed ? 0.78 : 1,
-          },
-        ]}>
-        <Text style={[styles.actionText, { color: secondary ? colors.text : colors.accentText }]}>
-          {children}
-        </Text>
-      </Pressable>
-    </Link>
+    <Pressable
+      accessibilityRole="button"
+      onPress={() => router.push(href)}
+      style={[
+        styles.actionButton,
+        {
+          backgroundColor: secondary ? colors.surfaceMuted : colors.accent,
+        },
+      ]}>
+      <Text style={[styles.actionText, { color: secondary ? colors.text : colors.accentText }]}>
+        {children}
+      </Text>
+    </Pressable>
   );
 }
 
 export default function DashboardScreen() {
   const colors = getRunLogColors(useColorScheme());
+  const { width } = useWindowDimensions();
+  const stats = calculateRunStats(runData.runs);
+  const hasRuns = stats.totalRuns > 0;
+  const singleColumn = width < 342;
 
   return (
     <AppScreen>
@@ -44,19 +53,24 @@ export default function DashboardScreen() {
         <View style={styles.distanceHeader}>
           <Text style={[styles.heroLabel, { color: colors.heroMuted }]}>TOTAL DISTANCE</Text>
           <View style={[styles.runCountPill, { backgroundColor: 'rgba(255,255,255,0.12)' }]}>
-            <Text style={[styles.runCountText, { color: colors.heroMuted }]}>0 RUNS</Text>
+            <Text style={[styles.runCountText, { color: colors.heroMuted }]}>
+              {stats.totalRuns} {stats.totalRuns === 1 ? 'RUN' : 'RUNS'}
+            </Text>
           </View>
         </View>
         <View style={styles.distanceValueRow}>
-          <Text style={styles.distanceValue}>0.0</Text>
+          <Text style={styles.distanceValue}>{formatDistance(stats.totalDistanceKm)}</Text>
           <Text style={[styles.distanceUnit, { color: colors.heroMuted }]}>km</Text>
         </View>
         <Text style={[styles.heroHint, { color: colors.heroMuted }]}>
-          Every great running habit starts with one.
+          {hasRuns ? 'A little progress, one run at a time.' : 'Every great running habit starts with one.'}
+        </Text>
+        <Text style={[styles.sampleNote, { color: colors.heroMuted }]}>
+          Static sample data · not saved
         </Text>
         <View style={styles.heroAction}>
           <ActionLink href="/add-run" colors={colors}>
-            Log your first run
+            Log a run
           </ActionLink>
         </View>
       </View>
@@ -66,10 +80,51 @@ export default function DashboardScreen() {
         <Text style={[styles.sectionHint, { color: colors.muted }]}>ALL TIME</Text>
       </View>
       <View style={styles.metricsGrid}>
-        <MetricCard label="Total runs" value="0" detail="A fresh start" />
-        <MetricCard label="Total duration" value="0h" unit="00m" detail="Time on your feet" />
-        <MetricCard label="Average pace" value="—" detail="Minutes per kilometre" />
-        <MetricCard label="This week" value="0.0" unit="km" detail="Monday – Sunday" />
+        {singleColumn ? (
+          <View style={styles.metricsColumn}>
+            <MetricCard label="Total runs" value={String(stats.totalRuns)} detail="All recorded runs" />
+            <MetricCard
+              label="Total duration"
+              value={formatDuration(stats.totalDurationMinutes)}
+              detail="Time on your feet"
+            />
+            <MetricCard
+              label="Average pace"
+              value={formatPace(stats.averagePaceMinutesPerKm)}
+              detail="Minutes per kilometre"
+            />
+            <MetricCard
+              label="This week"
+              value={formatDistance(stats.weeklyDistanceKm)}
+              unit="km"
+              detail="Monday – Sunday"
+            />
+          </View>
+        ) : (
+          <>
+            <View style={styles.metricsRow}>
+              <MetricCard label="Total runs" value={String(stats.totalRuns)} detail="All recorded runs" />
+              <MetricCard
+                label="Total duration"
+                value={formatDuration(stats.totalDurationMinutes)}
+                detail="Time on your feet"
+              />
+            </View>
+            <View style={styles.metricsRow}>
+              <MetricCard
+                label="Average pace"
+                value={formatPace(stats.averagePaceMinutesPerKm)}
+                detail="Minutes per kilometre"
+              />
+              <MetricCard
+                label="This week"
+                value={formatDistance(stats.weeklyDistanceKm)}
+                unit="km"
+                detail="Monday – Sunday"
+              />
+            </View>
+          </>
+        )}
       </View>
 
       <View style={[styles.weeklyCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
@@ -78,21 +133,31 @@ export default function DashboardScreen() {
             <Text style={[styles.weeklyTitle, { color: colors.text }]}>Your week</Text>
             <Text style={[styles.weeklySubtitle, { color: colors.muted }]}>Distance at a glance</Text>
           </View>
-          <Text style={[styles.weeklyTotal, { color: colors.text }]}>0.0 km</Text>
+          <Text style={[styles.weeklyTotal, { color: colors.text }]}>
+            {formatDistance(stats.weeklyDistanceKm)} km
+          </Text>
         </View>
         <View style={[styles.emptyChart, { backgroundColor: colors.surfaceMuted }]}>
           <Text style={[styles.emptyChartText, { color: colors.muted }]}>
-            Your first run will start the chart.
+            {stats.weeklyDistanceKm > 0
+              ? 'Weekly chart visualization is coming soon.'
+              : 'No runs logged this week yet.'}
           </Text>
         </View>
       </View>
-
-      <View style={styles.footerActions}>
-        <Text style={[styles.footerTitle, { color: colors.text }]}>Ready when you are.</Text>
+      <View style={styles.historyAction}>
         <ActionLink href="/history" secondary colors={colors}>
           View running history
         </ActionLink>
       </View>
+
+      {stats.invalidRecordCount > 0 ? (
+        <Text accessibilityRole="alert" style={[styles.dataWarning, { color: colors.muted }]}>
+          {stats.invalidRecordCount} invalid sample record
+          {stats.invalidRecordCount === 1 ? ' was' : 's were'} skipped.
+        </Text>
+      ) : null}
+
     </AppScreen>
   );
 }
@@ -130,9 +195,9 @@ const styles = StyleSheet.create({
     fontWeight: '900',
   },
   distanceCard: {
-    padding: 22,
-    borderRadius: 28,
-    marginBottom: 27,
+    padding: 24,
+    borderRadius: 26,
+    marginBottom: 24,
   },
   distanceHeader: {
     flexDirection: 'row',
@@ -177,9 +242,14 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     marginTop: 1,
   },
+  sampleNote: {
+    fontSize: 11,
+    lineHeight: 16,
+    marginTop: 7,
+  },
   heroAction: {
     alignSelf: 'flex-start',
-    marginTop: 20,
+    marginTop: 18,
   },
   actionButton: {
     minHeight: 46,
@@ -210,14 +280,19 @@ const styles = StyleSheet.create({
     letterSpacing: 1.3,
   },
   metricsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
     gap: 12,
     marginBottom: 18,
   },
+  metricsRow: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  metricsColumn: {
+    gap: 12,
+  },
   weeklyCard: {
-    padding: 18,
-    borderRadius: 22,
+    padding: 20,
+    borderRadius: 24,
     borderWidth: StyleSheet.hairlineWidth,
   },
   weeklyTop: {
@@ -252,13 +327,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textAlign: 'center',
   },
-  footerActions: {
-    alignItems: 'center',
-    gap: 11,
-    marginTop: 25,
+  dataWarning: {
+    fontSize: 12,
+    lineHeight: 18,
+    marginTop: 12,
   },
-  footerTitle: {
-    fontSize: 15,
-    fontWeight: '600',
+  historyAction: {
+    alignItems: 'center',
+    marginTop: 14,
   },
 });
