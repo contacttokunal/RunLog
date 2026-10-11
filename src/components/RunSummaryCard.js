@@ -14,7 +14,7 @@ import { formatDistance, formatDuration, formatPace } from '@/utils/runCalculati
 function formatRunDate(date) {
   const [year, month, day] = date.split('-').map(Number);
   return new Date(year, month - 1, day).toLocaleDateString(undefined, {
-    month: 'short',
+    month: 'long',
     day: 'numeric',
     year: 'numeric',
   });
@@ -27,7 +27,7 @@ export default function RunSummaryCard({ run, onEdit, onDelete, isDeleting = fal
   return (
     <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
       <View style={styles.header}>
-        <Text style={[styles.date, { color: colors.muted }]}>{dateLabel}</Text>
+        <Text style={[styles.date, { color: colors.text }]}>{dateLabel}</Text>
         <Text style={[styles.distance, { color: colors.text }]}>{formatDistance(run.distanceKm)} km</Text>
       </View>
       <View style={styles.details}>
@@ -88,16 +88,20 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'space-between',
     gap: 12,
   },
   date: {
+    flexGrow: 1,
     flexShrink: 1,
-    fontSize: 13,
-    fontWeight: '600',
+    fontSize: 14,
+    lineHeight: 20,
+    fontWeight: '700',
   },
   distance: {
+    flexShrink: 0,
     fontSize: 18,
     fontWeight: '700',
     fontVariant: ['tabular-nums'],
