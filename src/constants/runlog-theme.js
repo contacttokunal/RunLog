@@ -10,6 +10,7 @@ export const runLogColors = {
     hero: '#193E31',
     heroMuted: '#BDD0C4',
     border: '#E3E8E0',
+    danger: '#B93838',
     tab: '#FFFFFF',
   },
   dark: {
@@ -23,6 +24,7 @@ export const runLogColors = {
     hero: '#203F33',
     heroMuted: '#C2D2C7',
     border: '#2D3931',
+    danger: '#FF8B83',
     tab: '#1B241F',
   },
 };

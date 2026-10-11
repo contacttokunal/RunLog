@@ -70,15 +70,16 @@ This checklist expands [RUNLOG-IMPLEMENTATION-PLAN.md](./RUNLOG-IMPLEMENTATION-P
 
 ## Phase 5 — Running history and deletion
 
-- [ ] Build the history screen with runs in reverse chronological order.
-- [ ] Add an empty state with an action to create the first run.
-- [ ] Build a reusable run row/card showing date, distance, duration, pace, and notes when present.
+- [x] Build the history screen with runs in reverse chronological order.
+- [x] Add an empty state with an action to create the first run.
+- [x] Build a reusable run row/card showing date, distance, duration, pace, and notes when present.
 - [x] Add an edit action for each run.
-- [ ] Add a delete action with an explicit confirmation prompt.
-- [ ] Keep loading, storage errors, and delete-in-progress states understandable.
-- [ ] Verify that cancelling deletion preserves the run and confirming deletion updates history and dashboard metrics.
+- [x] Add a delete action with an explicit confirmation prompt.
+- [x] Keep loading, storage errors, and delete-in-progress states understandable.
+- [x] Verify that cancelling deletion preserves the run and confirming deletion updates history and dashboard metrics.
 
 **Exit criteria:** History supports empty and populated states, and confirmed edits/deletions propagate consistently.
+**Verification:** Browser checks confirmed the cancel action leaves the run intact, confirmation removes it from history, and dashboard distance, duration, count, and pace recalculate immediately. Android device testing remains outstanding.
 
 ## Phase 6 — Weekly chart and polish
 

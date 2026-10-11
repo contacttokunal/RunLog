@@ -1,11 +1,30 @@
 import { router } from 'expo-router';
-import { FlatList, Pressable, StyleSheet, Text, View, useColorScheme } from 'react-native';
+import { useRef, useState } from 'react';
+import {
+  ActivityIndicator,
+  FlatList,
+  Modal,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  useColorScheme,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import RunLoadState from '@/components/RunLoadState';
 import RunSummaryCard from '@/components/RunSummaryCard';
 import { getRunLogColors } from '@/constants/runlog-theme';
 import { useRuns } from '@/hooks/use-runs';
+
+function formatRunDate(date) {
+  const [year, month, day] = date.split('-').map(Number);
+  return new Date(year, month - 1, day).toLocaleDateString(undefined, {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
+}
 
 function HistoryHeader({ colors, isSampleData, error }) {
   return (
@@ -45,10 +64,105 @@ function EmptyHistory({ colors }) {
   );
 }
 
+function DeleteRunDialog({ run, colors, isDeleting, error, onCancel, onConfirm }) {
+  if (!run) {
+    return null;
+  }
+
+  return (
+    <Modal
+      animationType="fade"
+      transparent
+      visible
+      onRequestClose={isDeleting ? undefined : onCancel}
+      statusBarTranslucent>
+      <View style={styles.modalBackdrop} accessibilityViewIsModal>
+        <View
+          accessibilityRole="alert"
+          style={[
+            styles.dialog,
+            { backgroundColor: colors.surface, borderColor: colors.border },
+          ]}>
+          <Text style={[styles.dialogTitle, { color: colors.text }]}>Delete this run?</Text>
+          <Text style={[styles.dialogMessage, { color: colors.muted }]}>
+            This will permanently remove the {run.distanceKm.toFixed(1)} km run from{' '}
+            {formatRunDate(run.date)}. This can’t be undone.
+          </Text>
+          {error ? (
+            <Text accessibilityRole="alert" style={[styles.dialogError, { color: colors.danger }]}>
+              {error}
+            </Text>
+          ) : null}
+          <View style={styles.dialogActions}>
+            <Pressable
+              accessibilityRole="button"
+              disabled={isDeleting}
+              onPress={onCancel}
+              style={({ pressed }) => [
+                styles.dialogButton,
+                {
+                  backgroundColor: colors.surfaceMuted,
+                  opacity: pressed || isDeleting ? 0.65 : 1,
+                },
+              ]}>
+              <Text style={[styles.dialogButtonText, { color: colors.text }]}>Cancel</Text>
+            </Pressable>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityState={{ disabled: isDeleting, busy: isDeleting }}
+              disabled={isDeleting}
+              onPress={onConfirm}
+              style={({ pressed }) => [
+                styles.dialogButton,
+                {
+                  backgroundColor: colors.danger,
+                  opacity: pressed || isDeleting ? 0.75 : 1,
+                },
+              ]}>
+              {isDeleting ? (
+                <ActivityIndicator color="#FFFFFF" />
+              ) : (
+                <Text style={[styles.dialogButtonText, styles.confirmText]}>Delete run</Text>
+              )}
+            </Pressable>
+          </View>
+        </View>
+      </View>
+    </Modal>
+  );
+}
+
 export default function HistoryScreen() {
   const colors = getRunLogColors(useColorScheme());
-  const { runs, status, error, isSampleData, reload } = useRuns();
+  const { runs, status, error, isSampleData, reload, deleteRun } = useRuns();
+  const [pendingDelete, setPendingDelete] = useState(null);
+  const [deletingRunId, setDeletingRunId] = useState(null);
+  const [deleteError, setDeleteError] = useState(null);
+  const deleteInFlightRef = useRef(false);
   const sortedRuns = [...runs].sort((a, b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id));
+
+  async function confirmDelete() {
+    if (!pendingDelete || deleteInFlightRef.current) {
+      return;
+    }
+
+    deleteInFlightRef.current = true;
+    setDeletingRunId(pendingDelete.id);
+    setDeleteError(null);
+    try {
+      await deleteRun(pendingDelete.id);
+      setPendingDelete(null);
+    } catch (deleteFailure) {
+      setDeleteError(
+        deleteFailure instanceof Error
+          ? `Could not delete this run. It has been kept. ${deleteFailure.message}`
+          : 'Could not delete this run. It has been kept. Please try again.'
+      );
+    } finally {
+      deleteInFlightRef.current = false;
+      setDeletingRunId(null);
+    }
+  }
 
   if (status !== 'ready') {
     return (
@@ -65,7 +179,19 @@ export default function HistoryScreen() {
       <FlatList
         data={sortedRuns}
         keyExtractor={(run) => run.id}
-        renderItem={({ item }) => <RunSummaryCard run={item} />}
+        renderItem={({ item }) => (
+          <RunSummaryCard
+            run={item}
+            isDeleting={deletingRunId === item.id}
+            onDelete={(run) => {
+              if (deleteInFlightRef.current) {
+                return;
+              }
+              setDeleteError(null);
+              setPendingDelete(run);
+            }}
+          />
+        )}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
         ListHeaderComponent={
           <HistoryHeader colors={colors} isSampleData={isSampleData} error={error} />
@@ -73,6 +199,19 @@ export default function HistoryScreen() {
         ListEmptyComponent={<EmptyHistory colors={colors} />}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
+      />
+      <DeleteRunDialog
+        run={pendingDelete}
+        colors={colors}
+        isDeleting={deletingRunId !== null}
+        error={deleteError}
+        onCancel={() => {
+          if (!deleteInFlightRef.current) {
+            setPendingDelete(null);
+            setDeleteError(null);
+          }
+        }}
+        onConfirm={confirmDelete}
       />
     </SafeAreaView>
   );
@@ -175,5 +314,54 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 13,
     fontWeight: '700',
+  },
+  modalBackdrop: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 24,
+    backgroundColor: 'rgba(11, 18, 13, 0.55)',
+  },
+  dialog: {
+    width: '100%',
+    maxWidth: 420,
+    padding: 22,
+    borderRadius: 24,
+    borderWidth: StyleSheet.hairlineWidth,
+  },
+  dialogTitle: {
+    fontSize: 21,
+    lineHeight: 28,
+    fontWeight: '700',
+  },
+  dialogMessage: {
+    fontSize: 14,
+    lineHeight: 21,
+    marginTop: 9,
+  },
+  dialogError: {
+    fontSize: 13,
+    lineHeight: 19,
+    marginTop: 12,
+  },
+  dialogActions: {
+    flexDirection: 'row',
+    gap: 10,
+    marginTop: 22,
+  },
+  dialogButton: {
+    flex: 1,
+    minHeight: 48,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 12,
+    borderRadius: 15,
+  },
+  dialogButtonText: {
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  confirmText: {
+    color: '#FFFFFF',
   },
 });
