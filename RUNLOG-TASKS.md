@@ -38,19 +38,21 @@ This checklist expands [RUNLOG-IMPLEMENTATION-PLAN.md](./RUNLOG-IMPLEMENTATION-P
 - [x] Connect dashboard metrics to the static run data and identify it as sample data.
 - [x] Check valid records, empty data, invalid/zero-distance records, pace rounding, and week boundaries.
 
-**Exit criteria:** Calculations return correct values for known examples and safely exclude invalid static records. The JSON fixture is read-only and does not persist user edits; AsyncStorage remains a later phase.
+**Exit criteria:** Calculations return correct values for known examples and safely exclude invalid static records. The JSON fixture is read-only; Phase 3 uses it only to seed a new local store.
 
 ## Phase 3 — Local persistence and shared run state
 
-- [ ] Add a storage service around AsyncStorage with a single versioned storage key.
-- [ ] Load and validate stored records without silently treating a storage failure as an empty collection.
-- [ ] Save valid record collections and surface read/write failures through the app’s UI.
-- [ ] Ensure malformed stored data is not overwritten before the user can recover or explicitly replace it.
-- [ ] Add a shared hook or state layer that exposes runs, loading/error state, and add/update/delete operations.
-- [ ] Verify that creating or updating runs refreshes dashboard and history data consistently.
-- [ ] Verify persistence after a full app restart.
+- [x] Add a storage service around AsyncStorage with a single versioned storage key.
+- [x] Load and validate stored records without silently treating a storage failure as an empty collection.
+- [x] Save valid record collections and surface read/write failures through the app’s UI.
+- [x] Ensure malformed stored data is not overwritten before the user can recover or explicitly replace it.
+- [x] Add a shared hook or state layer that exposes runs, loading/error state, and add/update/delete operations.
+- [x] Connect dashboard and history to the shared local run state.
+- [x] Seed the sample JSON only when the versioned storage key is absent; preserve stored user data.
+- [x] Verify first-launch sample seeding, stored-run reload, dashboard/history synchronization, and malformed-data preservation in the browser storage backend.
+- [ ] Verify persistence and non-destructive sample seeding across a full app restart on Android (Android runtime unavailable here).
 
-**Exit criteria:** Valid runs persist locally; storage failures are visible and cannot silently erase user data.
+**Exit criteria:** Valid run data persists locally; malformed or unreadable data is reported without being overwritten. Device-level restart verification remains outstanding.
 
 ## Phase 4 — Add and edit run forms
 
@@ -77,17 +79,14 @@ This checklist expands [RUNLOG-IMPLEMENTATION-PLAN.md](./RUNLOG-IMPLEMENTATION-P
 
 **Exit criteria:** History supports empty and populated states, and confirmed edits/deletions propagate consistently.
 
-## Phase 6 — Weekly chart and sample records
+## Phase 6 — Weekly chart and polish
 
 - [ ] Evaluate React Native chart options for Expo SDK compatibility and native/build requirements.
 - [ ] Choose the simplest suitable chart dependency and install it using the Expo-compatible workflow when needed.
 - [ ] Implement the weekly distance chart with accessible labels and a useful empty-week state.
 - [ ] Verify chart values against the weekly-distance calculation for known records.
-- [ ] Define a clearly identifiable sample dataset for local testing.
-- [ ] Seed sample records only when storage is confirmed to contain no user records.
-- [ ] Verify that existing user data is never overwritten or mixed with samples unexpectedly.
 
-**Exit criteria:** The chart matches calculated weekly totals, and sample data is strictly non-destructive.
+**Exit criteria:** The chart matches calculated weekly totals, and previously seeded sample records remain non-destructive.
 
 ## Phase 7 — Polish, documentation, and final validation
 

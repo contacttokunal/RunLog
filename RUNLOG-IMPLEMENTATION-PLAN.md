@@ -32,7 +32,7 @@ src/
   services/
     runStorage.js           # AsyncStorage read/write and data validation
   data/
-    runs.json               # Read-only sample records for Phase 2
+    runs.json               # Read-only sample records used to seed a new local store
   utils/
     runCalculations.js      # Record validation, totals, weekly distance, pace formatting
 ```
@@ -56,7 +56,7 @@ These are proposed destinations, not a requirement to replace existing configura
 - Use the JSON as a read-only fixture for validating records and calculating dashboard totals, average pace, and current-week distance.
 - Calculate pace as duration in minutes divided by distance in km; format as `mm:ss /km`, handling rounding and seconds carry correctly.
 - Define weekly distance as the current Monday–Sunday week.
-- Keep the static fixture read-only; user-created data will move to AsyncStorage in a later stage.
+- Keep the static fixture read-only; user-created data is persisted in AsyncStorage from Phase 3 onward.
 
 **Verification:** Check calculations against known values, empty data, invalid records, zero distance, pace rounding, and week boundaries.
 
@@ -65,7 +65,7 @@ These are proposed destinations, not a requirement to replace existing configura
 - Replace the static JSON data source with AsyncStorage for user-created runs.
 - Preserve sample records as non-destructive seed data; seed only when storage is confirmed to contain no user data.
 - Surface storage errors and never silently replace data that cannot be read or validated.
-- Keep dashboard and history data synchronized.
+- Use shared app state so dashboard and history stay synchronized.
 
 **Verification:** Add or update runs, verify persistence after app restart, and confirm existing user data is never replaced by sample data.
 

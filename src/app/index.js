@@ -4,7 +4,8 @@ import { Pressable, StyleSheet, Text, View, useColorScheme, useWindowDimensions 
 import AppScreen from '@/components/AppScreen';
 import MetricCard from '@/components/MetricCard';
 import { getRunLogColors } from '@/constants/runlog-theme';
-import runData from '@/data/runs.json';
+import RunLoadState from '@/components/RunLoadState';
+import { useRuns } from '@/hooks/use-runs';
 import {
   calculateRunStats,
   formatDistance,
@@ -33,9 +34,18 @@ function ActionLink({ href, children, secondary = false, colors }) {
 export default function DashboardScreen() {
   const colors = getRunLogColors(useColorScheme());
   const { width } = useWindowDimensions();
-  const stats = calculateRunStats(runData.runs);
+  const { runs, status, error, isSampleData, reload } = useRuns();
+  const stats = calculateRunStats(runs);
   const hasRuns = stats.totalRuns > 0;
   const singleColumn = width < 342;
+
+  if (status !== 'ready') {
+    return (
+      <AppScreen contentContainerStyle={styles.stateContent}>
+        <RunLoadState error={status === 'error' ? error : null} onRetry={reload} />
+      </AppScreen>
+    );
+  }
 
   return (
     <AppScreen>
@@ -66,7 +76,7 @@ export default function DashboardScreen() {
           {hasRuns ? 'A little progress, one run at a time.' : 'Every great running habit starts with one.'}
         </Text>
         <Text style={[styles.sampleNote, { color: colors.heroMuted }]}>
-          Static sample data · not saved
+          {isSampleData ? 'Sample runs · saved on this device' : 'Saved on this device'}
         </Text>
         <View style={styles.heroAction}>
           <ActionLink href="/add-run" colors={colors}>
@@ -151,6 +161,12 @@ export default function DashboardScreen() {
         </ActionLink>
       </View>
 
+      {error ? (
+        <Text accessibilityRole="alert" style={[styles.dataWarning, { color: colors.muted }]}>
+          {error}
+        </Text>
+      ) : null}
+
       {stats.invalidRecordCount > 0 ? (
         <Text accessibilityRole="alert" style={[styles.dataWarning, { color: colors.muted }]}>
           {stats.invalidRecordCount} invalid sample record
@@ -163,6 +179,9 @@ export default function DashboardScreen() {
 }
 
 const styles = StyleSheet.create({
+  stateContent: {
+    flexGrow: 1,
+  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
