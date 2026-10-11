@@ -83,32 +83,35 @@ This checklist expands [RUNLOG-IMPLEMENTATION-PLAN.md](./RUNLOG-IMPLEMENTATION-P
 
 ## Phase 6 — Weekly chart and polish
 
-- [ ] Evaluate React Native chart options for Expo SDK compatibility and native/build requirements.
-- [ ] Choose the simplest suitable chart dependency and install it using the Expo-compatible workflow when needed.
-- [ ] Implement the weekly distance chart with accessible labels and a useful empty-week state.
-- [ ] Verify chart values against the weekly-distance calculation for known records.
+- [x] Evaluate React Native chart options for Expo SDK compatibility and native/build requirements.
+- [x] Choose the simplest suitable chart dependency and install it using the Expo-compatible workflow when needed.
+- [x] Implement the weekly distance chart with accessible labels and a useful empty-week state.
+- [x] Verify chart values against the weekly-distance calculation for known records.
 
 **Exit criteria:** The chart matches calculated weekly totals, and previously seeded sample records remain non-destructive.
+**Verification:** Expo SDK 57-compatible dependencies installed via Expo CLI; Android/web bundles built. Browser verification checked weekdays, empty-week messaging, and daily chart values against the weekly total after adding known runs.
 
 ## Phase 7 — Polish, documentation, and final validation
 
-- [ ] Apply consistent typography, spacing, colors, and touch target sizing across screens.
-- [ ] Check behavior on narrow screens and Android system font scaling.
-- [ ] Review accessibility labels and readable contrast for controls, chart, and status messages.
-- [ ] Update the README with app scope, local storage behavior, and Android run instructions.
-- [ ] Run the available lint command and resolve task-related findings.
-- [ ] Run the available type check and resolve task-related findings without expanding the TypeScript scope.
+- [x] Apply consistent typography, spacing, colors, and touch target sizing across screens.
+- [x] Check behavior on narrow screens.
+- [ ] Check Android system font scaling on a device or emulator.
+- [x] Review accessibility labels and readable contrast for controls, chart, and status messages.
+- [x] Update the README with app scope, local storage behavior, and Android run instructions.
+- [x] Run the available lint command and resolve task-related findings.
+- [x] Run the available type check and resolve task-related findings without expanding the TypeScript scope.
 - [ ] Start the Expo app and verify the completed flows on Android.
-- [ ] Review the final diff for unrelated changes, accidental configuration replacement, and unhandled errors.
+- [x] Review the final diff for unrelated changes, accidental configuration replacement, and unhandled errors.
 
 **Exit criteria:** Required checks pass, core flows have been exercised on Android, and documented limitations are explicit.
+**Verification:** Focused ESLint, `tsc --noEmit`, web export, and Android export passed. Browser layout checks at 320px and 390px showed no horizontal overflow. Full ESLint continues to report the existing unrelated `react-hooks/set-state-in-effect` diagnostic in `src/hooks/use-color-scheme.web.ts`. Android device and font-scaling verification remain outstanding because no emulator/device is available here.
 
 ## Definition of done
 
-- [ ] Dashboard metrics, average pace, and weekly distance are calculated from persisted runs.
-- [ ] Add, edit, history, and confirmed delete flows work with local storage.
-- [ ] Empty, loading, validation, and storage-error states are handled.
-- [ ] Sample records never overwrite existing user data.
-- [ ] The app remains JavaScript-based and preserves the existing Expo setup.
-- [ ] No authentication, backend, GPS tracking, or paid service has been added.
+- [x] Dashboard metrics, average pace, and weekly distance are calculated from persisted runs.
+- [x] Add, edit, history, and confirmed delete flows work with local storage.
+- [x] Empty, loading, validation, and storage-error states are handled.
+- [x] Sample records never overwrite existing user data.
+- [x] The app remains JavaScript-based and preserves the existing Expo setup.
+- [x] No authentication, backend, GPS tracking, or paid service has been added.
 - [ ] Lint, type checks, and Android verification have been run and their results reported accurately.

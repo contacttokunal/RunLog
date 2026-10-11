@@ -99,6 +99,41 @@ function startOfWeek(date) {
   return start;
 }
 
+function formatDateKey(date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(
+    date.getDate()
+  ).padStart(2, '0')}`;
+}
+
+export function calculateWeeklyRunDistances(records, now = new Date()) {
+  if (!(now instanceof Date) || !Number.isFinite(now.getTime())) {
+    throw new TypeError('The reference date must be a valid Date.');
+  }
+
+  const weekStart = startOfWeek(now);
+  const days = Array.from({ length: 7 }, (_, index) => {
+    const date = new Date(weekStart);
+    date.setDate(weekStart.getDate() + index);
+    return {
+      date: formatDateKey(date),
+      label: date.toLocaleDateString(undefined, { weekday: 'short' }),
+      fullLabel: date.toLocaleDateString(undefined, { weekday: 'long' }),
+      value: 0,
+    };
+  });
+  const dayIndexes = new Map(days.map((day, index) => [day.date, index]));
+  const { runs } = validateRunRecords(records);
+
+  runs.forEach((run) => {
+    const dayIndex = dayIndexes.get(run.date);
+    if (dayIndex !== undefined) {
+      days[dayIndex].value += run.distanceKm;
+    }
+  });
+
+  return days;
+}
+
 export function calculateRunStats(records, now = new Date()) {
   if (!(now instanceof Date) || !Number.isFinite(now.getTime())) {
     throw new TypeError('The reference date must be a valid Date.');

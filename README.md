@@ -1,56 +1,34 @@
-# Welcome to your Expo app 👋
+# RunLog
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+RunLog is a personal running tracker built with Expo, React Native, and JavaScript. It records runs on-device and summarizes distance, duration, average pace, and weekly distance.
 
-## Get started
+## Features
 
-1. Install dependencies
+- Dashboard totals and a Monday–Sunday distance chart.
+- Add, edit, and delete runs with date, distance in kilometres, duration in minutes, and optional notes.
+- Inline form validation, loading and storage-error states, and confirmation before deleting.
+- Local persistence with AsyncStorage; no account, backend, GPS tracking, or paid service.
 
-   ```bash
-   npm install
-   ```
+## Run the app
 
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+Install dependencies and start Expo:
 
 ```bash
-npm run reset-project
+npm install
+npm run start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Open the app on an Android device or emulator using the Expo CLI prompts. An Android development environment is required for emulator/device workflows. Expo Go can be used where its bundled native modules support the installed SDK.
 
-### Other setup steps
+## Local data and sample runs
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+Sample records in `src/data/runs.json` are copied into AsyncStorage only when the RunLog storage key is absent on first launch. Existing records are not replaced with samples. Runs remain on the device under the versioned `@runlog/runs:v1` key; unreadable or invalid stored data is reported instead of silently reset.
 
-## Learn more
+## Checks
 
-To learn more about developing your project with Expo, look at the following resources:
+```bash
+npm run lint
+npx tsc --noEmit
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+The app implementation is JavaScript-based. The TypeScript command checks the existing project configuration and types.

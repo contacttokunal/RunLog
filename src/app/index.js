@@ -3,10 +3,12 @@ import { Pressable, StyleSheet, Text, View, useColorScheme, useWindowDimensions 
 
 import AppScreen from '@/components/AppScreen';
 import MetricCard from '@/components/MetricCard';
+import WeeklyDistanceChart from '@/components/WeeklyDistanceChart';
 import { getRunLogColors } from '@/constants/runlog-theme';
 import RunLoadState from '@/components/RunLoadState';
 import { useRuns } from '@/hooks/use-runs';
 import {
+  calculateWeeklyRunDistances,
   calculateRunStats,
   formatDistance,
   formatDuration,
@@ -35,7 +37,9 @@ export default function DashboardScreen() {
   const colors = getRunLogColors(useColorScheme());
   const { width } = useWindowDimensions();
   const { runs, status, error, isSampleData, reload } = useRuns();
-  const stats = calculateRunStats(runs);
+  const now = new Date();
+  const stats = calculateRunStats(runs, now);
+  const weeklyDistances = calculateWeeklyRunDistances(runs, now);
   const hasRuns = stats.totalRuns > 0;
   const singleColumn = width < 342;
 
@@ -147,13 +151,7 @@ export default function DashboardScreen() {
             {formatDistance(stats.weeklyDistanceKm)} km
           </Text>
         </View>
-        <View style={[styles.emptyChart, { backgroundColor: colors.surfaceMuted }]}>
-          <Text style={[styles.emptyChartText, { color: colors.muted }]}>
-            {stats.weeklyDistanceKm > 0
-              ? 'Weekly chart visualization is coming soon.'
-              : 'No runs logged this week yet.'}
-          </Text>
-        </View>
+        <WeeklyDistanceChart days={weeklyDistances} totalDistanceKm={stats.weeklyDistanceKm} />
       </View>
       <View style={styles.historyAction}>
         <ActionLink href="/history" secondary colors={colors}>
@@ -334,17 +332,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '700',
     fontVariant: ['tabular-nums'],
-  },
-  emptyChart: {
-    minHeight: 76,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 12,
-    borderRadius: 15,
-  },
-  emptyChartText: {
-    fontSize: 12,
-    textAlign: 'center',
   },
   dataWarning: {
     fontSize: 12,

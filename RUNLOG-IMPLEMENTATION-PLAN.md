@@ -88,12 +88,13 @@ These are proposed destinations, not a requirement to replace existing configura
 
 ### 6. Weekly chart and polish
 
-- Select a React Native chart library after confirming compatibility with the project’s Expo SDK and installation requirements.
-- Keep chart dependencies limited to those required by the selected library.
+- Use `react-native-gifted-charts` for a seven-day bar chart, with `expo-linear-gradient` and `react-native-svg` installed at Expo SDK-compatible versions.
+- Calculate Monday–Sunday per-day distance from the same validated persisted runs as the dashboard totals.
+- Keep the chart readable and accessible on narrow screens and in empty weeks.
 - Polish shared styling, loading and storage-error states, and small-screen behavior.
 - Update the README with app usage.
 
-**Verification:** Check the chart with empty and populated weeks; run available lint and type checks; and verify the Android app.
+**Verification:** Check weekly chart values against known runs in empty and populated weeks; run available lint and type checks; and export the Android bundle. Complete a device smoke test when an Android device or emulator is available.
 
 ## Scope constraints
 
