@@ -20,6 +20,17 @@ npm run start
 
 Open the app on an Android device or emulator using the Expo CLI prompts. An Android development environment is required for emulator/device workflows. Expo Go can be used where its bundled native modules support the installed SDK.
 
+## Build an installable Android APK
+
+An internal APK can be built with EAS Build:
+
+```bash
+npx eas-cli login
+npx eas-cli build --platform android --profile preview
+```
+
+Download the APK from the build link EAS prints when the build finishes, copy it to an Android device, and install it. The APK bundles the app, so using RunLog after installation does not require an internet connection. EAS Build requires an Expo account and internet access to create the build.
+
 ## Local data and sample runs
 
 Sample records in `src/data/runs.json` are copied into AsyncStorage only when the RunLog storage key is absent on first launch. Existing records are not replaced with samples. Runs remain on the device under the versioned `@runlog/runs:v1` key; unreadable or invalid stored data is reported instead of silently reset.
