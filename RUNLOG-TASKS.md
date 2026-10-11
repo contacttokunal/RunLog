@@ -14,15 +14,17 @@ This checklist expands [RUNLOG-IMPLEMENTATION-PLAN.md](./RUNLOG-IMPLEMENTATION-P
 
 ## Phase 1 — Navigation and dashboard shell
 
-- [ ] Create or adapt the Expo Router layout for Dashboard, History, and Add Run navigation.
-- [ ] Replace the starter Home screen with a mobile-first dashboard shell.
-- [ ] Add a reusable screen container that respects safe areas and small screen widths.
-- [ ] Add a reusable metric card component and dashboard placeholders for distance, run count, duration, and average pace.
-- [ ] Add an initial empty state and a route/action to open Add Run.
-- [ ] Remove or repurpose starter routes and components only where needed by the new navigation.
-- [ ] Verify navigation and dashboard rendering on Android.
+- [x] Create or adapt the Expo Router layout for Dashboard, History, and Add Run navigation.
+- [x] Replace the starter Home screen with a mobile-first dashboard shell.
+- [x] Add a reusable screen container that respects safe areas and small screen widths.
+- [x] Add a reusable metric card component and dashboard placeholders for distance, run count, duration, and average pace.
+- [x] Add an initial empty state and a route/action to open Add Run.
+- [x] Remove or repurpose starter routes and components only where needed by the new navigation.
+- [x] Build the Android JavaScript bundle with Expo.
+- [x] Check the Dashboard, History, and Add Run routes and responsive dashboard in the browser export.
+- [ ] Run navigation and layout smoke tests on an Android device or emulator (pending: no Android SDK/emulator is available in this environment).
 
-**Exit criteria:** The app opens to the dashboard and the primary routes are reachable without runtime or layout errors.
+**Exit criteria:** The Android bundle builds and the routes render in the browser export. An Android device/emulator smoke test remains outstanding.
 
 ## Phase 2 — Run data and calculations
 
