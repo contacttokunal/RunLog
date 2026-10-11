@@ -20,7 +20,9 @@ export default function WeeklyDistanceChart({ days, totalDistanceKm }) {
     .join('. ');
   const chartData = days.map((day) => ({
     value: day.value,
-    label: day.label,
+    labelComponent: () => (
+      <Text style={[styles.dayLabel, { color: colors.text }]}>{day.label}</Text>
+    ),
     frontColor: day.value > 0 ? colors.accent : colors.border,
     topLabelComponent:
       day.value > 0
@@ -67,7 +69,6 @@ export default function WeeklyDistanceChart({ days, totalDistanceKm }) {
           disableScroll
           isAnimated={false}
           labelsExtraHeight={4}
-          labelTextStyle={[styles.dayLabel, { color: colors.muted }]}
           topLabelTextStyle={[styles.valueLabel, { color: colors.muted }]}
         />
       </View>
@@ -87,8 +88,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   dayLabel: {
-    fontSize: 10,
-    lineHeight: 14,
+    color: '#18221B',
+    fontSize: 11,
+    lineHeight: 16,
+    fontWeight: '700',
+    textAlign: 'center',
   },
   valueLabel: {
     fontSize: 9,
