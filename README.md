@@ -9,6 +9,25 @@ RunLog is a personal running tracker built with Expo, React Native, and JavaScri
 - Inline form validation, loading and storage-error states, and confirmation before deleting.
 - Local persistence with AsyncStorage; no account, backend, GPS tracking, or paid service.
 
+## Add Run screen showcase
+
+![RunLog Add Run screen showcase](assets/images/add-run-showcase.svg)
+
+## Dashboard showcase
+
+![RunLog dashboard showcase](assets/images/dashboard-showcase.svg)
+
+## Add Run screen
+
+Choose **Add Run** in the app navigation to open the run form. Enter:
+
+- **Date** in `YYYY-MM-DD` format (defaults to today).
+- **Distance** in kilometres.
+- **Duration** in minutes.
+- **Notes** (optional), such as how the run felt.
+
+The date must be a real calendar date, and distance and duration must be greater than zero. Validation messages appear beside fields that need attention. Choose **Save run** to save the entry on this device, or **Cancel** to leave without saving. To edit a saved run, open it from Running History; the form is prefilled and the button reads **Save changes**.
+
 ## Run the app
 
 Install dependencies and start Expo:

@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1440" viewBox="0 0 1080 1440" fill="none">
+  <defs>
+    <linearGradient id="background" x1="80" y1="90" x2="1010" y2="1350" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8F9F5"/>
+      <stop offset="1" stop-color="#E9EFE6"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="92" y1="830" x2="480" y2="1190" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D8F69A"/>
+      <stop offset="1" stop-color="#C8F169"/>
+    </linearGradient>
+    <filter id="phoneShadow" x="536" y="69" width="518" height="1170" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" result="hardAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+      <feOffset dy="20"/>
+      <feGaussianBlur stdDeviation="20"/>
+      <feComposite in2="hardAlpha" operator="out"/>
+      <feColorMatrix values="0 0 0 0 0.09 0 0 0 0 0.16 0 0 0 0 0.11 0 0 0 0.16 0"/>
+      <feBlend in2="BackgroundImageFix" result="effect1_dropShadow"/>
+      <feBlend in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+    </filter>
+    <clipPath id="screenClip">
+      <rect x="594" y="126" width="394" height="996" rx="38"/>
+    </clipPath>
+  </defs>
+
+  <rect width="1080" height="1440" fill="url(#background)"/>
+  <circle cx="102" cy="1096" r="223" fill="#C8F169" fill-opacity=".16"/>
+  <circle cx="1010" cy="192" r="185" fill="#BCD0C1" fill-opacity=".2"/>
+
+  <g font-family="Arial, Helvetica, sans-serif">
+    <rect x="92" y="151" width="48" height="48" rx="16" fill="#193E31"/>
+    <path d="M106 177.5c7-1 10-6 11-13 6 4 8 10 5 17-2 5-7 8-13 8-7 0-12-4-13-10 3 1 7 0 10-2Z" fill="#C8F169"/>
+    <text x="154" y="183" fill="#193E31" font-size="25" font-weight="800" letter-spacing="1.6">RUNLOG</text>
+
+    <text x="94" y="391" fill="#6F7A70" font-size="15" font-weight="800" letter-spacing="3.2">A NEW MILESTONE</text>
+    <text x="90" y="470" fill="#18221B" font-size="61" font-weight="800" letter-spacing="-2.5">Add a run.</text>
+    <text x="94" y="518" fill="#6F7A70" font-size="23">The little details add up.</text>
+    <text x="94" y="552" fill="#6F7A70" font-size="23">Log your run and keep moving.</text>
+
+    <rect x="92" y="634" width="390" height="170" rx="28" fill="#FFFFFF" fill-opacity=".78" stroke="#E3E8E0"/>
+    <circle cx="130" cy="677" r="15" fill="#E9EDE6"/>
+    <path d="M125 677h10M130 672v10" stroke="#193E31" stroke-width="2" stroke-linecap="round"/>
+    <text x="158" y="684" fill="#18221B" font-size="16" font-weight="700">Simple by design</text>
+    <text x="120" y="726" fill="#6F7A70" font-size="15">Distance, time, and notes.</text>
+    <text x="120" y="752" fill="#6F7A70" font-size="15">Saved privately on your device.</text>
+
+    <rect x="92" y="834" width="390" height="220" rx="28" fill="url(#accent)"/>
+    <text x="122" y="886" fill="#1A2711" font-size="13" font-weight="800" letter-spacing="2">YOUR RUN, YOUR RECORD</text>
+    <text x="120" y="950" fill="#1A2711" font-size="41" font-weight="800">Ready when</text>
+    <text x="120" y="997" fill="#1A2711" font-size="41" font-weight="800">you are.</text>
+    <path d="M420 990h27m-10-10 10 10-10 10" stroke="#1A2711" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <g filter="url(#phoneShadow)">
+      <rect x="576" y="105" width="430" height="1040" rx="58" fill="#18221B"/>
+      <rect x="590" y="119" width="402" height="1012" rx="45" fill="#FFFFFF"/>
+    </g>
+    <g clip-path="url(#screenClip)">
+      <rect x="594" y="126" width="394" height="996" fill="#F4F5F0"/>
+      <rect x="594" y="126" width="394" height="996" fill="#F4F5F0"/>
+      <text x="620" y="158" fill="#18221B" font-size="14" font-weight="700">9:41</text>
+      <path d="M921 148h3m4-4h3v8h-3zm6-3h3v11h-3zm7-2h3v13h-3z" fill="#18221B"/>
+      <rect x="958" y="140" width="18" height="11" rx="3" stroke="#18221B" stroke-width="1.5"/>
+      <rect x="960" y="142" width="12" height="7" rx="2" fill="#193E31"/>
+      <rect x="977" y="143" width="2" height="5" rx="1" fill="#18221B"/>
+
+      <text x="620" y="217" fill="#6F7A70" font-size="10" font-weight="800" letter-spacing="1.8">A NEW MILESTONE</text>
+      <text x="618" y="258" fill="#18221B" font-size="31" font-weight="800" letter-spacing="-1">Add a run</text>
+      <text x="620" y="285" fill="#6F7A70" font-size="14">Add the details while they’re fresh.</text>
+
+      <rect x="612" y="311" width="358" height="581" rx="25" fill="#FFFFFF" stroke="#E3E8E0"/>
+
+      <text x="633" y="349" fill="#18221B" font-size="14" font-weight="700">Date</text>
+      <rect x="632" y="362" width="318" height="53" rx="14" fill="#FFFFFF" stroke="#E3E8E0"/>
+      <text x="649" y="395" fill="#18221B" font-size="16">2026-10-12</text>
+
+      <text x="633" y="451" fill="#18221B" font-size="14" font-weight="700">Distance (km)</text>
+      <rect x="632" y="464" width="318" height="53" rx="14" fill="#FFFFFF" stroke="#E3E8E0"/>
+      <text x="649" y="497" fill="#18221B" font-size="16">5.0</text>
+
+      <text x="633" y="553" fill="#18221B" font-size="14" font-weight="700">Duration (minutes)</text>
+      <rect x="632" y="566" width="318" height="53" rx="14" fill="#FFFFFF" stroke="#E3E8E0"/>
+      <text x="649" y="599" fill="#18221B" font-size="16">32</text>
+
+      <text x="633" y="655" fill="#18221B" font-size="14" font-weight="700">Notes (optional)</text>
+      <rect x="632" y="668" width="318" height="77" rx="14" fill="#FFFFFF" stroke="#E3E8E0"/>
+      <text x="649" y="700" fill="#6F7A70" font-size="14">Felt strong on the last</text>
+      <text x="649" y="722" fill="#6F7A70" font-size="14">kilometre.</text>
+
+      <rect x="632" y="768" width="116" height="51" rx="15" fill="#E9EDE6"/>
+      <text x="690" y="800" text-anchor="middle" fill="#18221B" font-size="14" font-weight="700">Cancel</text>
+      <rect x="758" y="768" width="192" height="51" rx="15" fill="#C8F169"/>
+      <text x="854" y="800" text-anchor="middle" fill="#1A2711" font-size="14" font-weight="700">Save run</text>
+
+      <rect x="594" y="922" width="394" height="200" fill="#FFFFFF"/>
+      <path d="M594 922.5h394" stroke="#E3E8E0"/>
+      <circle cx="657" cy="962" r="13" fill="#E9EDE6"/>
+      <circle cx="791" cy="962" r="13" fill="#E9EDE6"/>
+      <circle cx="925" cy="962" r="15" fill="#C8F169"/>
+      <path d="M652 962h10m-5-5v10m129-7h10m-10 4h10m124 1 5-5 5 5m-5-5v11" stroke="#193E31" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="657" y="991" text-anchor="middle" fill="#6F7A70" font-size="10" font-weight="600">Dashboard</text>
+      <text x="791" y="991" text-anchor="middle" fill="#6F7A70" font-size="10" font-weight="600">History</text>
+      <text x="925" y="991" text-anchor="middle" fill="#193E31" font-size="10" font-weight="700">Add Run</text>
+      <rect x="741" y="1101" width="100" height="5" rx="2.5" fill="#18221B"/>
+    </g>
+  </g>
+</svg>
